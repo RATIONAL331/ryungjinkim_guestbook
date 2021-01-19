@@ -21,7 +21,7 @@
                         <option value="tcw" th:selected="${pageRequestDTO.type == 'tcw'}">제목 + 내용 + 작성자</option>
                     </select>
                 </div>
-                <input th:value="${pageRequestDTO.keyword}" name="keyword" class="form-control">
+                <input th:value="${pageRequestDTO.keyword}" name="keyword" class="form-control" id="searchBox">
                 <div class="input-group-append" id="button-addon4">
                     <button class="btn btn-outline-secondary btn-search" type="button">Search</button>
                     <button class="btn btn-outline-secondary btn-clear" type="button">Clear</button>
@@ -94,11 +94,39 @@
             }
 
             const searchForm = $("#searchForm");
+            const customSelect = $(".custom-select");
+            const searchBox = $("#searchBox");
+            const searchButton = $(".btn-search");
             $('.btn-search').click(function (e){
+                if(searchBox.val() === ""){
+                    alert("검색하실 단어를 입력하세요.");
+                    return ;
+                }
                 searchForm.submit();
             });
             $('.btn-clear').click(function (e){
                 searchForm.empty().submit();
+            });
+
+            window.onload=function(){
+                if ($(".custom-select option:selected").val() === "-----"){
+                    searchBox.attr('disabled', true);
+                    searchButton.attr('disabled', true);
+                }else{
+                    searchBox.attr('disabled', false);
+                    searchButton.attr('disabled', false);
+                }
+            }
+
+            customSelect.change(function(){
+                const selectValue = $(".custom-select option:selected").val();
+                if(selectValue === "-----"){
+                    searchBox.attr('disabled', true);
+                    searchButton.attr('disabled', true);
+                }else{
+                    searchBox.attr('disabled', false);
+                    searchButton.attr('disabled', false);
+                }
             });
         </script>
     </th:block>
